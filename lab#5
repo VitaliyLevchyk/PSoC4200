@@ -1,0 +1,45 @@
+#include "project.h"
+
+void car(uint8 c) { 
+    // Підпрограма виводить 8 нестандартних символів
+    LCD_Position(0, c); LCD_PutChar(2);       // нестандартний символ
+    LCD_Position(0, c + 1); LCD_PutChar(3);   // у позицію c
+    LCD_Position(0, c + 2); LCD_PutChar(4);
+    LCD_Position(1, c); LCD_PutChar(5);
+    LCD_Position(1, c + 1); LCD_PutChar(6);
+    LCD_Position(1, c + 2); LCD_PutChar(7);
+    LCD_Position(0, c - 1); LCD_PutChar(8);   // нестандартний символ No8
+    LCD_Position(1, c - 1); LCD_PutChar(1);
+}
+
+int main(void) {
+    uint8 col = 1;           // Початкова позиція для верхнього рядка
+    uint8 col_2 = 9;         // Початкова позиція для нижнього рядка
+    char S[10] = {'B', 'I', 'T', 'A', 8, 'i', 1, ' ', 2, 3}; 
+    char lower_row[2] = {4, 5}; 
+
+    LCD_Start();
+
+    for(;;) {
+        CyDelay(500); 
+        LCD_ClearDisplay(); 
+
+        // Виведення верхнього рядка по колу
+        for (uint8 i = 0; i < 10; i++) {
+            LCD_Position(0, (col + i) % 16); 
+            LCD_PutChar(S[i]);
+        }
+
+        // Виведення нижнього рядка
+        LCD_Position(1, col_2);
+        LCD_PutChar(lower_row[0]);
+        LCD_Position(1, col_2 + 1);
+        LCD_PutChar(lower_row[1]);
+        
+        // Зміщення нижнього рядка по колу
+        col_2 = (col_2 + 1) % 16;
+
+        // Зсув верхнього рядка по колу
+        col = (col + 1) % 16;
+    }
+}
